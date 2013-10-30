@@ -74,7 +74,7 @@
   };
 
   pencil.onclick = function(e) {
-    canvas.style.display = (canvas.style.display === 'none') ? 'block' : 'none';
+    canvas.style.display = (canvas.style.display === 'none') ? '' : 'none';
   };
 
   canvas.style.display = 'none';
