@@ -86,8 +86,29 @@
   bigCanvas.width = w.innerWidth;
   bigCanvas.height = w.innerHeight;
 
-  bigCanvas.onmousemove = function(e) {
+  var last = null;
+  function draw(element, coords) {
+    bigContext.beginPath();
+    bigContext.strokeStyle = 'rgb(' + currentColor.join(',') + ')';
+    bigContext.lineWidth = 5;
+    bigContext.lineJoin = 'round';
+    bigContext.moveTo(last.x, last.y);
+    bigContext.lineTo(coords.x, coords.y);
+    bigContext.closePath();
+    bigContext.stroke();
+  }
 
+  bigCanvas.onmousedown = function(e) {
+    last = relativeMouseCoords(e, bigCanvas);
+
+    bigCanvas.onmousemove = function(e) {
+      var coords = relativeMouseCoords(e, bigCanvas);
+      draw(bigCanvas, coords);
+      last = relativeMouseCoords(e, bigCanvas);
+    };
+    bigCanvas.onmouseup = function(e) {
+      bigCanvas.onmousemove = bigCanvas.onmouseup = undefined;
+    };
   };
 
   d.body.appendChild(pencil);
