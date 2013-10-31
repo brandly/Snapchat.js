@@ -6,7 +6,20 @@
   canvas = d.createElement('canvas'),
   context = canvas.getContext('2d'),
   pencil = d.createElement('div'),
-  currentColor = [0, 0, 0];
+
+  config = {
+
+  },
+
+  currentColor = [255, 0, 0];
+  currentColor.toString = function() {
+    return 'rgb(' + currentColor.join(',') + ')';
+  };
+  currentColor.set = function (data) {
+    for (var i = 0; i <3 ; i++) {
+      currentColor[i] = data[i];
+    }
+  };
 
   function createVerticalRainbow(height) {
     // thanks dude
@@ -47,29 +60,24 @@
       element.style[item] = styles[item];
     }
   }
-  applyStyles(pencil, {
-    width: 100,
-    height: 100,
-    border: '1px solid black'
-  });
 
-  canvas.width = 10;
+  canvas.width = 15;
+  canvas.height = 200;
   context.fillStyle = createVerticalRainbow(canvas.height);
   context.fillRect(0, 0, canvas.width, canvas.height);
 
   function setDrawingColor(e) {
     var
-    coords = relativeMouseCoords(e, canvas),
-    data = context.getImageData(coords.x, coords.y, 1, 1).data;
-    currentColor = [data[0], data[1], data[2]];
-    pencil.style.backgroundColor= 'rgb(' + currentColor.join(',') + ')';
+    coords = relativeMouseCoords(e, canvas);
+    currentColor.set( context.getImageData(0, Math.min(coords.y, canvas.height - 1), 1, 1).data );
+    pencil.style.backgroundColor = currentColor.toString();
   };
 
   canvas.onmousedown = function(e) {
     setDrawingColor(e);
     canvas.onmousemove = setDrawingColor;
-    w.onmouseup = function(e) {
-      canvas.onmousemove = w.onmouseup = undefined;
+    canvas.onmouseout = canvas.onmouseup = function(e) {
+      canvas.onmousemove = canvas.onmouseout = canvas.onmouseup = undefined;
     };
   };
 
@@ -89,7 +97,7 @@
   var last = null;
   function draw(element, coords) {
     bigContext.beginPath();
-    bigContext.strokeStyle = 'rgb(' + currentColor.join(',') + ')';
+    bigContext.strokeStyle = currentColor.toString();
     bigContext.lineWidth = 5;
     bigContext.lineJoin = 'round';
     bigContext.moveTo(last.x, last.y);
@@ -111,8 +119,40 @@
     };
   };
 
+  applyStyles(bigCanvas, {
+    position: 'absolute',
+    top: 0,
+    left: 0
+  });
+
+  applyStyles(pencil, {
+    width: 60,
+    height: 60,
+    border: '1px solid black',
+    position: 'absolute',
+    top: '10px',
+    right: '10px'
+  });
+
+  applyStyles(canvas, {
+    position: 'absolute',
+    top: '95px',
+    right: '10px'
+  });
+
+  var
+  borderStyles = {
+    border: '4px solid white',
+    borderRadius: '5px',
+    'box-shadow': '0 0 5px black'
+  };
+  applyStyles(canvas, borderStyles);
+  applyStyles(pencil, borderStyles);
+
+  pencil.style.backgroundColor = currentColor.toString();
+
+  d.body.appendChild(bigCanvas);
   d.body.appendChild(pencil);
   d.body.appendChild(canvas);
-  d.body.appendChild(bigCanvas);
 
 }).call(this, window, document);
