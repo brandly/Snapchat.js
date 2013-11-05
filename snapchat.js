@@ -3,8 +3,8 @@
   'use strict';
 
   var
-  canvas = d.createElement('canvas'),
-  context = canvas.getContext('2d'),
+  colorPicker = d.createElement('canvas'),
+  context = colorPicker.getContext('2d'),
   pencil = d.createElement('div'),
 
   config = {
@@ -61,31 +61,31 @@
     }
   }
 
-  canvas.width = 15;
-  canvas.height = 200;
-  context.fillStyle = createVerticalRainbow(canvas.height);
-  context.fillRect(0, 0, canvas.width, canvas.height);
+  colorPicker.width = 15;
+  colorPicker.height = 200;
+  context.fillStyle = createVerticalRainbow(colorPicker.height);
+  context.fillRect(0, 0, colorPicker.width, colorPicker.height);
 
   function setDrawingColor(e) {
     var
-    coords = relativeMouseCoords(e, canvas);
-    currentColor.set( context.getImageData(0, Math.min(coords.y, canvas.height - 1), 1, 1).data );
+    coords = relativeMouseCoords(e, colorPicker);
+    currentColor.set( context.getImageData(0, Math.min(coords.y, colorPicker.height - 1), 1, 1).data );
     pencil.style.backgroundColor = currentColor.toString();
   };
 
-  canvas.onmousedown = function(e) {
+  colorPicker.onmousedown = function(e) {
     setDrawingColor(e);
-    canvas.onmousemove = setDrawingColor;
-    canvas.onmouseout = canvas.onmouseup = function(e) {
-      canvas.onmousemove = canvas.onmouseout = canvas.onmouseup = undefined;
+    colorPicker.onmousemove = setDrawingColor;
+    colorPicker.onmouseout = colorPicker.onmouseup = function(e) {
+      colorPicker.onmousemove = colorPicker.onmouseout = colorPicker.onmouseup = undefined;
     };
   };
 
   pencil.onclick = function(e) {
-    canvas.style.display = (canvas.style.display === 'none') ? '' : 'none';
+    colorPicker.style.display = (colorPicker.style.display === 'none') ? '' : 'none';
   };
 
-  canvas.style.display = 'none';
+  colorPicker.style.display = 'none';
 
   var
   bigCanvas = d.createElement('canvas'),
@@ -134,7 +134,7 @@
     right: '10px'
   });
 
-  applyStyles(canvas, {
+  applyStyles(colorPicker, {
     position: 'absolute',
     top: '95px',
     right: '10px'
@@ -146,13 +146,13 @@
     borderRadius: '5px',
     'box-shadow': '0 0 5px black'
   };
-  applyStyles(canvas, borderStyles);
+  applyStyles(colorPicker, borderStyles);
   applyStyles(pencil, borderStyles);
 
   pencil.style.backgroundColor = currentColor.toString();
 
   d.body.appendChild(bigCanvas);
   d.body.appendChild(pencil);
-  d.body.appendChild(canvas);
+  d.body.appendChild(colorPicker);
 
 }).call(this, window, document);
