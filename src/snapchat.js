@@ -94,7 +94,13 @@
   });
 
   pencil.addEventListener('click', function(e) {
-    colorPicker.style.display = (colorPicker.style.display === 'none') ? '' : 'none';
+    if (colorPicker.style.display === 'none') {
+      applyStyles(colorPicker, {display: ''});
+      applyStyles(bigCanvas, {'pointer-events': ''});
+    } else {
+      applyStyles(colorPicker, {display: 'none'});
+      applyStyles(bigCanvas, {'pointer-events': 'none'});
+    }
   });
 
   colorPicker.style.display = 'none';
@@ -138,7 +144,8 @@
   applyStyles(bigCanvas, {
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
+    'pointer-events': 'none'
   });
 
   applyStyles(pencil, {
