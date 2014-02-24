@@ -66,7 +66,7 @@
     },
     init: function() {
       var context, el = colorPicker.element;
-      this.context = context = el.getContext('2d');
+      colorPicker.context = context = el.getContext('2d');
 
       // size
       el.width = this.size.width;
@@ -138,7 +138,6 @@
       utils.css(el, {
         width: '60px',
         height: '60px',
-        border: '1px solid black',
         position: 'absolute',
         top: '10px',
         right: '10px',
@@ -162,8 +161,11 @@
       pencil.refresh();
     },
     refresh: function() {
-      pencil.element.style.backgroundColor = pencil.getCurrentColor();
-      bigCanvas.setColor(pencil.getCurrentColor());
+      var currentColor = pencil.getCurrentColor();
+      utils.css(pencil.element, {
+          backgroundColor: currentColor
+      });
+      bigCanvas.setColor(currentColor);
     }
   },
   bigCanvas = {
@@ -171,7 +173,7 @@
     history: [],
     init: function() {
       var context, el = bigCanvas.element;
-      this.context = context = this.element.getContext('2d');
+      bigCanvas.context = context = this.element.getContext('2d');
 
       // size
       el.width = w.innerWidth;
@@ -195,6 +197,7 @@
           el.removeEventListener(events.move, drawMove);
           el.removeEventListener(events.up, removeListeners);
           bigCanvas.history.push(line);
+          undo.refresh();
         }
 
         previousCoords = utils.relativeMouseCoords(e, el);
@@ -249,11 +252,61 @@
     undo: function() {
       bigCanvas.history.pop();
       bigCanvas.redraw();
+      undo.refresh();
+    }
+  },
+  undo = {
+    element: d.createElement('canvas'),
+    size: {
+      width: 15,
+      height: 200
+    },
+    init: function() {
+      var context, el = undo.element;
+      undo.context = context = el.getContext('2d');
+
+      // events
+      el.addEventListener('click', function(e) {
+        bigCanvas.undo();
+      });
+
+      // styles
+      utils.css(el, {
+        display: 'none',
+        width: '50px',
+        height: '50px',
+        position: 'absolute',
+        top: '10px',
+        right: '90px',
+        zIndex: '1001'
+      });
+      utils.css(el, utils.borderStyles);
+
+      // dom
+      d.body.appendChild(el);
+    },
+    show: function() {
+      utils.css(undo.element, {display: ''});
+    },
+    hide: function() {
+      utils.css(undo.element, {display: 'none'});
+    },
+    refresh: function() {
+      if (bigCanvas.history.length) {
+        var lastColor = bigCanvas.history[bigCanvas.history.length - 1].color;
+        utils.css(undo.element, {
+          backgroundColor: lastColor
+        });
+        undo.show();
+      } else {
+        undo.hide();
+      }
     }
   };
 
   bigCanvas.init();
   pencil.init();
   colorPicker.init();
+  undo.init();
 
 }).call(this, window, document);
