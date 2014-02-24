@@ -11,6 +11,14 @@
 
   },
 
+  hasTouch = 'ontouchstart' in d.documentElement,
+  events = {
+    down: hasTouch ? 'touchstart' : 'mousedown',
+    move: hasTouch ? 'touchmove' : 'mousemove',
+    up: hasTouch ? 'touchend' : 'mouseup',
+    out: hasTouch ? 'touchcancel' : 'mouseout'
+  },
+
   currentColor = [255, 0, 0];
   currentColor.toString = function() {
     return 'rgb(' + currentColor.join(',') + ')';
@@ -71,19 +79,29 @@
     coords = relativeMouseCoords(e, colorPicker);
     currentColor.set( context.getImageData(0, Math.min(coords.y, colorPicker.height - 1), 1, 1).data );
     pencil.style.backgroundColor = currentColor.toString();
-  };
+  }
 
-  colorPicker.onmousedown = function(e) {
+  colorPicker.addEventListener(events.down, function(e) {
     setDrawingColor(e);
-    colorPicker.onmousemove = setDrawingColor;
-    colorPicker.onmouseout = colorPicker.onmouseup = function(e) {
-      colorPicker.onmousemove = colorPicker.onmouseout = colorPicker.onmouseup = undefined;
+    function removeListeners(e) {
+      colorPicker.removeEventListener(events.move, setDrawingColor);
+      colorPicker.removeEventListener(events.up, removeListeners);
+      colorPicker.removeEventListener(events.out, removeListeners);
     };
-  };
+    colorPicker.addEventListener(events.move, setDrawingColor);
+    colorPicker.addEventListener(events.up, removeListeners);
+    colorPicker.addEventListener(events.out, removeListeners);
+  });
 
-  pencil.onclick = function(e) {
-    colorPicker.style.display = (colorPicker.style.display === 'none') ? '' : 'none';
-  };
+  pencil.addEventListener('click', function(e) {
+    if (colorPicker.style.display === 'none') {
+      applyStyles(colorPicker, {display: ''});
+      applyStyles(bigCanvas, {'pointer-events': ''});
+    } else {
+      applyStyles(colorPicker, {display: 'none'});
+      applyStyles(bigCanvas, {'pointer-events': 'none'});
+    }
+  });
 
   colorPicker.style.display = 'none';
 
@@ -106,23 +124,28 @@
     bigContext.stroke();
   }
 
-  bigCanvas.onmousedown = function(e) {
-    last = relativeMouseCoords(e, bigCanvas);
-
-    bigCanvas.onmousemove = function(e) {
+  bigCanvas.addEventListener(events.down, function(e) {
+    function drawMove(e) {
       var coords = relativeMouseCoords(e, bigCanvas);
       draw(bigCanvas, coords);
       last = relativeMouseCoords(e, bigCanvas);
-    };
-    bigCanvas.onmouseup = function(e) {
-      bigCanvas.onmousemove = bigCanvas.onmouseup = undefined;
-    };
-  };
+    }
+
+    function removeListeners(e) {
+      bigCanvas.removeEventListener(events.move, drawMove);
+      bigCanvas.removeEventListener(events.up, removeListeners);
+    }
+
+    last = relativeMouseCoords(e, bigCanvas);
+    bigCanvas.addEventListener(events.move, drawMove);
+    bigCanvas.addEventListener(events.up, removeListeners);
+  });
 
   applyStyles(bigCanvas, {
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
+    'pointer-events': 'none'
   });
 
   applyStyles(pencil, {
