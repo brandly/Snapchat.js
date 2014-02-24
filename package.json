@@ -8,6 +8,8 @@
     "gulp": "~3.5.1",
     "gulp-util": "~2.2.14",
     "path": "~0.4.9",
-    "express": "~3.4.8"
+    "express": "~3.4.8",
+    "gulp-uglify": "^0.2.1",
+    "gulp-concat": "^2.1.7"
   }
 }
