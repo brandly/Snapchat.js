@@ -112,23 +112,23 @@
   bigCanvas.width = w.innerWidth;
   bigCanvas.height = w.innerHeight;
 
-  var last = null;
-  function draw(element, coords) {
-    bigContext.beginPath();
-    bigContext.strokeStyle = currentColor.toString();
-    bigContext.lineWidth = 5;
-    bigContext.lineJoin = 'round';
-    bigContext.moveTo(last.x, last.y);
-    bigContext.lineTo(coords.x, coords.y);
-    bigContext.closePath();
-    bigContext.stroke();
+  var previousCoords = null;
+  function draw(context, start, end) {
+    context.beginPath();
+    context.strokeStyle = currentColor.toString();
+    context.lineWidth = 5;
+    context.lineJoin = 'round';
+    context.moveTo(start.x, start.y);
+    context.lineTo(end.x, end.y);
+    context.closePath();
+    context.stroke();
   }
 
   bigCanvas.addEventListener(events.down, function(e) {
     function drawMove(e) {
       var coords = relativeMouseCoords(e, bigCanvas);
-      draw(bigCanvas, coords);
-      last = relativeMouseCoords(e, bigCanvas);
+      draw(bigContext, previousCoords, coords);
+      previousCoords = coords;
     }
 
     function removeListeners(e) {
@@ -136,7 +136,7 @@
       bigCanvas.removeEventListener(events.up, removeListeners);
     }
 
-    last = relativeMouseCoords(e, bigCanvas);
+    previousCoords = relativeMouseCoords(e, bigCanvas);
     bigCanvas.addEventListener(events.move, drawMove);
     bigCanvas.addEventListener(events.up, removeListeners);
   });
