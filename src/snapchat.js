@@ -195,9 +195,9 @@
           line.push(coords);
         }
 
-        function removeListeners(e) {
+        function finishLine(e) {
           el.removeEventListener(events.move, drawMove);
-          el.removeEventListener(events.up, removeListeners);
+          el.removeEventListener(events.up, finishLine);
           bigCanvas.history.push(line);
           undo.refresh();
         }
@@ -206,7 +206,7 @@
         line.push(previousCoords);
 
         el.addEventListener(events.move, drawMove);
-        el.addEventListener(events.up, removeListeners);
+        el.addEventListener(events.up, finishLine);
       });
 
       // style
@@ -259,10 +259,6 @@
   },
   undo = {
     element: d.createElement('canvas'),
-    size: {
-      width: 15,
-      height: 200
-    },
     init: function() {
       var context, el = undo.element;
       undo.context = context = el.getContext('2d');
