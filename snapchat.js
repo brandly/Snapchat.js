@@ -109,7 +109,7 @@
       pencil.setCurrentColor(color);
     },
     isVisibile: function() {
-      colorPicker.element.style.display === '';
+      return colorPicker.element.style.display === '';
     },
     show: function() {
       utils.css(colorPicker.element, {display: ''});
@@ -128,9 +128,11 @@
         if (colorPicker.isVisibile()) {
           colorPicker.hide();
           bigCanvas.disable();
+          undo.hide();
         } else {
           colorPicker.show();
           bigCanvas.enable();
+          undo.refresh();
         }
       });
 
