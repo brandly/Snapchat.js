@@ -149,8 +149,8 @@
   });
 
   applyStyles(pencil, {
-    width: 60,
-    height: 60,
+    width: '60px',
+    height: '60px',
     border: '1px solid black',
     position: 'absolute',
     top: '10px',
