@@ -145,7 +145,8 @@
     position: 'absolute',
     top: 0,
     left: 0,
-    'pointer-events': 'none'
+    'pointer-events': 'none',
+    zIndex: '1000'
   });
 
   applyStyles(pencil, {
@@ -154,13 +155,15 @@
     border: '1px solid black',
     position: 'absolute',
     top: '10px',
-    right: '10px'
+    right: '10px',
+    zIndex: '1001'
   });
 
   applyStyles(colorPicker, {
     position: 'absolute',
     top: '95px',
-    right: '10px'
+    right: '10px',
+    zIndex: '1001'
   });
 
   var
