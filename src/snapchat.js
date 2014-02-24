@@ -160,14 +160,15 @@
         pencil.currentColor[i] = data[i];
       }
       pencil.refresh();
-      bigCanvas.context.strokeStyle = pencil.getCurrentColor();
     },
     refresh: function() {
       pencil.element.style.backgroundColor = pencil.getCurrentColor();
+      bigCanvas.setColor(pencil.getCurrentColor());
     }
   },
   bigCanvas = {
     element: d.createElement('canvas'),
+    history: [],
     init: function() {
       var context, el = bigCanvas.element;
       this.context = context = this.element.getContext('2d');
@@ -179,18 +180,26 @@
       // events
       var previousCoords = null;
       el.addEventListener(events.down, function(e) {
+        // coords for a line
+        var line = [];
+        line.color = pencil.getCurrentColor();
+
         function drawMove(e) {
           var coords = utils.relativeMouseCoords(e, el);
           utils.draw(context, previousCoords, coords);
           previousCoords = coords;
+          line.push(coords);
         }
 
         function removeListeners(e) {
           el.removeEventListener(events.move, drawMove);
           el.removeEventListener(events.up, removeListeners);
+          bigCanvas.history.push(line);
         }
 
         previousCoords = utils.relativeMouseCoords(e, el);
+        line.push(previousCoords);
+
         el.addEventListener(events.move, drawMove);
         el.addEventListener(events.up, removeListeners);
       });
@@ -203,17 +212,43 @@
         left: 0,
         'pointer-events': 'none',
       });
-      context.lineWidth = 5;
-      context.lineJoin = 'round';
+      bigCanvas.defaultLineStyle();
 
       // dom
       d.body.appendChild(el);
+    },
+    defaultLineStyle: function() {
+      bigCanvas.context.lineWidth = 5;
+      bigCanvas.context.lineJoin = 'round';
+    },
+    setColor: function(color) {
+      bigCanvas.context.strokeStyle = color;
     },
     enable: function() {
       utils.css(bigCanvas.element, {'pointer-events': ''});
     },
     disable: function() {
       utils.css(bigCanvas.element, {'pointer-events': 'none'});
+    },
+    redraw: function() {
+      // clear it
+      bigCanvas.element.width = bigCanvas.element.width;
+      bigCanvas.defaultLineStyle();
+
+      for(var i = 0, length = bigCanvas.history.length; i < length; i++) {
+        var line = bigCanvas.history[i];
+        bigCanvas.setColor(line.color);
+        for (var j = 0, max = line.length - 1; j < max; j++) {
+          utils.draw(bigCanvas.context, line[j], line[j + 1]);
+        };
+      }
+
+      // since we messed with bigCanvas' color
+      pencil.refresh();
+    },
+    undo: function() {
+      bigCanvas.history.pop();
+      bigCanvas.redraw();
     }
   };
 
