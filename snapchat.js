@@ -29,9 +29,11 @@
         totalOffsetY += el.offsetTop - el.scrollTop;
       } while(el = el.offsetParent);
 
+      console.log(w);
+
       return {
-        x: event.pageX - totalOffsetX,
-        y: event.pageY - totalOffsetY
+        x: event.pageX - totalOffsetX - w.scrollX,
+        y: event.pageY - totalOffsetY - w.scrollY
       }
     },
     css: function(element, styles) {
@@ -91,7 +93,7 @@
 
       // styles
       utils.css(el, {
-        position: 'absolute',
+        position: 'fixed',
         top: '95px',
         right: '10px',
         zIndex: '1001',
@@ -140,10 +142,11 @@
       utils.css(el, {
         width: '60px',
         height: '60px',
-        position: 'absolute',
+        position: 'fixed',
         top: '10px',
         right: '10px',
-        zIndex: '1001'
+        zIndex: '1001',
+        cursor: 'pointer'
       });
       utils.css(el, utils.borderStyles);
       pencil.refresh();
@@ -178,8 +181,8 @@
       bigCanvas.context = context = this.element.getContext('2d');
 
       // size
-      el.width = w.innerWidth;
-      el.height = w.innerHeight;
+      el.width = d.body.scrollWidth;
+      el.height = d.body.scrollHeight;
 
       // events
       var previousCoords = null;
@@ -195,9 +198,9 @@
           line.push(coords);
         }
 
-        function removeListeners(e) {
+        function finishLine(e) {
           el.removeEventListener(events.move, drawMove);
-          el.removeEventListener(events.up, removeListeners);
+          el.removeEventListener(events.up, finishLine);
           bigCanvas.history.push(line);
           undo.refresh();
         }
@@ -206,7 +209,7 @@
         line.push(previousCoords);
 
         el.addEventListener(events.move, drawMove);
-        el.addEventListener(events.up, removeListeners);
+        el.addEventListener(events.up, finishLine);
       });
 
       // style
@@ -215,7 +218,7 @@
         position: 'absolute',
         top: 0,
         left: 0,
-        'pointer-events': 'none',
+        'pointer-events': 'none'
       });
       bigCanvas.defaultLineStyle();
 
@@ -230,10 +233,16 @@
       bigCanvas.context.strokeStyle = color;
     },
     enable: function() {
-      utils.css(bigCanvas.element, {'pointer-events': ''});
+      utils.css(bigCanvas.element, {
+        'pointer-events': '',
+        cursor: 'crosshair'
+      });
     },
     disable: function() {
-      utils.css(bigCanvas.element, {'pointer-events': 'none'});
+      utils.css(bigCanvas.element, {
+        'pointer-events': 'none',
+        cursor: ''
+      });
     },
     redraw: function() {
       // clear it
@@ -245,7 +254,7 @@
         bigCanvas.setColor(line.color);
         for (var j = 0, max = line.length - 1; j < max; j++) {
           utils.draw(bigCanvas.context, line[j], line[j + 1]);
-        };
+        }
       }
 
       // since we messed with bigCanvas' color
@@ -259,10 +268,6 @@
   },
   undo = {
     element: d.createElement('canvas'),
-    size: {
-      width: 15,
-      height: 200
-    },
     init: function() {
       var context, el = undo.element;
       undo.context = context = el.getContext('2d');
@@ -277,10 +282,11 @@
         display: 'none',
         width: '50px',
         height: '50px',
-        position: 'absolute',
+        position: 'fixed',
         top: '10px',
         right: '90px',
-        zIndex: '1001'
+        zIndex: '1001',
+        cursor: 'pointer'
       });
       utils.css(el, utils.borderStyles);
 
