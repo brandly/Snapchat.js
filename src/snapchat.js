@@ -143,7 +143,8 @@
         position: 'absolute',
         top: '10px',
         right: '10px',
-        zIndex: '1001'
+        zIndex: '1001',
+        cursor: 'pointer'
       });
       utils.css(el, utils.borderStyles);
       pencil.refresh();
@@ -215,7 +216,7 @@
         position: 'absolute',
         top: 0,
         left: 0,
-        'pointer-events': 'none',
+        'pointer-events': 'none'
       });
       bigCanvas.defaultLineStyle();
 
@@ -230,10 +231,16 @@
       bigCanvas.context.strokeStyle = color;
     },
     enable: function() {
-      utils.css(bigCanvas.element, {'pointer-events': ''});
+      utils.css(bigCanvas.element, {
+        'pointer-events': '',
+        cursor: 'crosshair'
+      });
     },
     disable: function() {
-      utils.css(bigCanvas.element, {'pointer-events': 'none'});
+      utils.css(bigCanvas.element, {
+        'pointer-events': 'none',
+        cursor: ''
+      });
     },
     redraw: function() {
       // clear it
@@ -245,7 +252,7 @@
         bigCanvas.setColor(line.color);
         for (var j = 0, max = line.length - 1; j < max; j++) {
           utils.draw(bigCanvas.context, line[j], line[j + 1]);
-        };
+        }
       }
 
       // since we messed with bigCanvas' color
@@ -276,7 +283,8 @@
         position: 'absolute',
         top: '10px',
         right: '90px',
-        zIndex: '1001'
+        zIndex: '1001',
+        cursor: 'pointer'
       });
       utils.css(el, utils.borderStyles);
 
