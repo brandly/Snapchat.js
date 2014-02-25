@@ -179,8 +179,8 @@
       bigCanvas.context = context = this.element.getContext('2d');
 
       // size
-      el.width = w.innerWidth;
-      el.height = w.innerHeight;
+      el.width = d.body.scrollWidth;
+      el.height = d.body.scrollHeight;
 
       // events
       var previousCoords = null;
