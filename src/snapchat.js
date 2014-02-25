@@ -29,8 +29,6 @@
         totalOffsetY += el.offsetTop - el.scrollTop;
       } while(el = el.offsetParent);
 
-      console.log(w);
-
       return {
         x: event.pageX - totalOffsetX - w.scrollX,
         y: event.pageY - totalOffsetY - w.scrollY
