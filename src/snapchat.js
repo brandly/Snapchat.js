@@ -29,9 +29,11 @@
         totalOffsetY += el.offsetTop - el.scrollTop;
       } while(el = el.offsetParent);
 
+      console.log(w);
+
       return {
-        x: event.pageX - totalOffsetX,
-        y: event.pageY - totalOffsetY
+        x: event.pageX - totalOffsetX - w.scrollX,
+        y: event.pageY - totalOffsetY - w.scrollY
       }
     },
     css: function(element, styles) {
@@ -91,7 +93,7 @@
 
       // styles
       utils.css(el, {
-        position: 'absolute',
+        position: 'fixed',
         top: '95px',
         right: '10px',
         zIndex: '1001',
@@ -140,7 +142,7 @@
       utils.css(el, {
         width: '60px',
         height: '60px',
-        position: 'absolute',
+        position: 'fixed',
         top: '10px',
         right: '10px',
         zIndex: '1001',
@@ -280,7 +282,7 @@
         display: 'none',
         width: '50px',
         height: '50px',
-        position: 'absolute',
+        position: 'fixed',
         top: '10px',
         right: '90px',
         zIndex: '1001',
