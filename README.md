@@ -1,4 +1,4 @@
-![Snapchat.js](http://i.imgur.com/A8ybHNw.png)
+![Snapchat.js](http://i.imgur.com/RkwlgUX.jpg)
 
 Add Snapchat.js to your page, and you'll be able to scribble all over it.
 
