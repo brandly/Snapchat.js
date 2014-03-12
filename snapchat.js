@@ -136,13 +136,19 @@
         }
       });
 
+      // icon
+      // thanks P.J. Onori
+      // http://thenounproject.com/term/pencil/2870/
+      el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="50px" height="50px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">'
+                   +   '<path style="fill:white;" d="M92.676,7.324C87.805,2.441,81.408,0,75,0c-6.396,0-12.793,2.441-17.676,7.324L0.098,64.551L0,100  h35.352l57.324-57.324C102.441,32.91,102.441,17.09,92.676,7.324z M30.176,87.5H25V75H12.573l0.013-5.249l53.576-53.589l0,0  l17.676,17.676l0,0L30.176,87.5z"/>'
+                   + '</svg>';
+
       // styles
       utils.css(el, {
-        width: '60px',
-        height: '60px',
         position: 'fixed',
         top: '10px',
         right: '10px',
+        padding: '6px',
         zIndex: '1001',
         cursor: 'pointer'
       });
@@ -265,24 +271,35 @@
     }
   },
   undo = {
-    element: d.createElement('canvas'),
+    element: d.createElement('div'),
     init: function() {
-      var context, el = undo.element;
-      undo.context = context = el.getContext('2d');
+      var el = undo.element;
 
       // events
       el.addEventListener('click', function(e) {
         bigCanvas.undo();
       });
 
+      // icon
+      // thanks, Alex Auda Samora
+      // http://thenounproject.com/term/arrow/34729/
+      el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="30px" height="30px" viewBox="0 0 30 30" enable-background="new 0 0 30 30" xml:space="preserve" fill="white" transform="translate(30), scale(-1, 1)" >'
+                   +   '<g transform="translate(30,0), scale(-1,1)">'
+                   +    '<rect x="-131" y="-29" display="none" width="198" height="87"/>'
+                   +    '<path d="M-89.562-16c15.323,0,20.256,11.675,20.857,13.264l10.103-9.526v34.928l-35.445-11.228l12.513-5.865  c-1.783-2.515-5.753-5.132-8.668-5.132c-3.417,0-10.462,0.213-11.103,15.801S-91.27,37.808-90.203,44  c-12.812-2.562-25.195-22.419-25.195-34.88S-106.003-16-89.562-16z" />'
+                   +    '<path d="M-29.708-7c10.215,0,13.504,7.784,13.905,8.843l6.735-6.351v23.286l-23.63-7.485l8.342-3.91  c-1.188-1.676-3.836-3.421-5.779-3.421c-2.278,0-6.975,0.142-7.401,10.535c-0.427,10.393,6.69,14.376,7.401,18.504  c-8.541-1.707-16.796-14.946-16.796-23.253C-46.932,1.439-40.669-7-29.708-7z"/>'
+                   +    '<path d="M13.719,0c7.662,0,10.128,5.838,10.429,6.632l5.051-4.763v17.464L11.477,13.72l6.256-2.933  c-0.891-1.257-2.877-2.566-4.334-2.566c-1.708,0-5.231,0.106-5.551,7.901C7.527,23.916,12.865,26.904,13.398,30  C6.993,28.72,0.801,18.791,0.801,12.56S5.498,0,13.719,0z"/>'
+                   +    '<path d="M45.146,4c5.107,0,6.752,3.892,6.952,4.421l3.368-3.175v11.643l-11.815-3.743l4.171-1.955  c-0.594-0.838-1.918-1.71-2.89-1.71c-1.139,0-3.487,0.071-3.7,5.267c-0.214,5.196,3.345,7.188,3.7,9.252  c-4.271-0.854-8.398-7.473-8.398-11.626C36.534,8.22,39.666,4,45.146,4z"/>'
+                   +   '</g>'
+                   + '</svg>';
+
       // styles
       utils.css(el, {
         display: 'none',
-        width: '50px',
-        height: '50px',
         position: 'fixed',
         top: '10px',
         right: '90px',
+        padding: '5px',
         zIndex: '1001',
         cursor: 'pointer'
       });
