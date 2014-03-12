@@ -150,6 +150,7 @@
         right: '10px',
         padding: '6px',
         zIndex: '1001',
+        lineHeight: '1',
         cursor: 'pointer'
       });
       utils.css(el, utils.borderStyles);
@@ -301,6 +302,7 @@
         right: '90px',
         padding: '5px',
         zIndex: '1001',
+        lineHeight: '1',
         cursor: 'pointer'
       });
       utils.css(el, utils.borderStyles);
