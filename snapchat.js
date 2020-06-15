@@ -220,7 +220,7 @@
       // style
       utils.css(el, {
         zIndex: '1000',
-        position: 'fixed',
+        position: 'absolute',
         top: 0,
         left: 0,
         'pointer-events': 'none'
