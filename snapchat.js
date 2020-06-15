@@ -186,7 +186,7 @@
       bigCanvas.context = context = this.element.getContext('2d');
 
       // size
-      el.width = d.body.scrollWidth;
+      el.width = w.innerWidth;
       el.height = d.body.scrollHeight;
 
       // events
@@ -220,7 +220,7 @@
       // style
       utils.css(el, {
         zIndex: '1000',
-        position: 'absolute',
+        position: 'fixed',
         top: 0,
         left: 0,
         'pointer-events': 'none'
