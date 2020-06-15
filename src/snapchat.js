@@ -20,8 +20,8 @@
     },
     // thanks dude
     // http://stackoverflow.com/questions/55677/how-do-i-get-the-coordinates-of-a-mouse-click-on-a-canvas-element
-    relativeMouseCoords: function(event, el) {
-      var bodyRect = d.body.getBoundingClientRect();
+    relativeMouseCoords: function(event, el, bodyOffset = true) {
+      var bodyRect = bodyOffset ? d.body.getBoundingClientRect() : { left: 0, top: 0 };
       var totalOffsetX = bodyRect.left,
           totalOffsetY = bodyRect.top;
 
@@ -105,7 +105,7 @@
     },
     setDrawingColor: function(e) {
       var
-      coords = utils.relativeMouseCoords(e, colorPicker.element),
+      coords = utils.relativeMouseCoords(e, colorPicker.element, false),
       color = colorPicker.context.getImageData(0, Math.min(coords.y, colorPicker.size.height - 1), 1, 1).data;
       pencil.setCurrentColor(color);
     },
