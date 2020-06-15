@@ -4,12 +4,12 @@
   "author": "Matthew Brandly",
   "version": "0.0.1",
   "private": true,
-  "dependencies": {
-    "gulp": "~3.5.1",
-    "gulp-util": "~2.2.14",
-    "path": "~0.4.9",
-    "express": "~3.4.8",
-    "gulp-uglify": "^0.2.1",
-    "gulp-concat": "^2.1.7"
+  "scripts": {
+    "start": "open src/index.html",
+    "deploy": "mkdir -p dist && cp src/* dist/ && uglifyjs src/snapchat.js > dist/snapchat.min.js && gh-pages --dist dist/"
+  },
+  "devDependencies": {
+    "gh-pages": "3.0.0",
+    "uglify-js": "3.9.4"
   }
 }
