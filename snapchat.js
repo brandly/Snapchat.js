@@ -284,7 +284,7 @@
       // icon
       // thanks, Alex Auda Samora
       // http://thenounproject.com/term/arrow/34729/
-      el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="30px" height="30px" viewBox="0 0 30 30" enable-background="new 0 0 30 30" xml:space="preserve" fill="white" transform="translate(30), scale(-1, 1)" >'
+      el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="30px" height="30px" viewBox="0 0 30 30" enable-background="new 0 0 30 30" xml:space="preserve" fill="white" transform="scale(-1, 1)" >'
                    +   '<g transform="translate(30,0), scale(-1,1)">'
                    +    '<rect x="-131" y="-29" display="none" width="198" height="87"/>'
                    +    '<path d="M-89.562-16c15.323,0,20.256,11.675,20.857,13.264l10.103-9.526v34.928l-35.445-11.228l12.513-5.865  c-1.783-2.515-5.753-5.132-8.668-5.132c-3.417,0-10.462,0.213-11.103,15.801S-91.27,37.808-90.203,44  c-12.812-2.562-25.195-22.419-25.195-34.88S-106.003-16-89.562-16z" />'
