@@ -21,8 +21,9 @@
     // thanks dude
     // http://stackoverflow.com/questions/55677/how-do-i-get-the-coordinates-of-a-mouse-click-on-a-canvas-element
     relativeMouseCoords: function(event, el) {
-      var totalOffsetX = 0,
-          totalOffsetY = 0;
+      var bodyRect = d.body.getBoundingClientRect();
+      var totalOffsetX = bodyRect.left,
+          totalOffsetY = bodyRect.top;
 
       do {
         totalOffsetX += el.offsetLeft - el.scrollLeft;
@@ -187,7 +188,7 @@
 
       // size
       el.width = w.innerWidth;
-      el.height = d.body.scrollHeight;
+      el.height = d.scrollingElement.offsetHeight;
 
       // events
       var previousCoords = null;
@@ -217,12 +218,14 @@
         el.addEventListener(events.up, finishLine);
       });
 
+      var bodyRect = d.body.getBoundingClientRect();
+
       // style
       utils.css(el, {
         zIndex: '1000',
-        position: 'fixed',
-        top: 0,
-        left: 0,
+        position: 'absolute',
+        top: -(bodyRect.top + w.scrollY) + 'px',
+        left: -(bodyRect.left + w.scrollX) + 'px',
         'pointer-events': 'none'
       });
       bigCanvas.defaultLineStyle();
